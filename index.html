@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Shield</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#d7ecff;
+    display:flex;
+    justify-content:center;
+    padding:20px;
+    margin:0;
+}
+
+.container{
+    width:420px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#0056b3;
+}
+
+.section{
+    margin-top:20px;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+input{
+    width:95%;
+    padding:10px;
+    margin:10px 0;
+    font-size:16px;
+}
+
+button{
+    padding:8px 12px;
+    margin:5px 0;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    background:#007bff;
+    color:white;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.progress{
+    width:100%;
+    height:18px;
+    background:#ddd;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+#bar{
+    height:100%;
+    width:0%;
+    background:red;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+#result{
+    font-weight:bold;
+    margin-top:10px;
+}
+
+ul{
+    font-size:14px;
+    text-align:left;
+}
+
+footer{
+    text-align:center;
+    margin-top:10px;
+    font-size:12px;
+    color:gray;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Cyber Shield</h1>
+
+<!-- PASSWORD CHECKER -->
+<div class="section">
+<h3>Password Checker</h3>
+
+<input type="password" id="checkPass" placeholder="Enter Password">
+
+<button onclick="checkPassword()">Check Password</button>
+<button onclick="togglePassword()">Show / Hide</button>
+
+<div class="progress">
+<div id="bar"></div>
+</div>
+
+<h3 id="result"></h3>
+<ul id="tips"></ul>
+</div>
+
+<!-- PASSWORD GENERATOR -->
+<div class="section">
+<h3>Password Generator</h3>
+
+<input type="text" id="genPass" readonly>
+
+<button onclick="generatePassword()">Generate Password</button>
+<button onclick="copyPassword()">Copy Password</button>
+</div>
+
+<footer>Made by Hardeepsinh Chauhan</footer>
+
+</div>
+
+<script>
+
+function checkPassword(){
+
+let p=document.getElementById("checkPass").value;
+
+let score=0;
+let tips=[];
+
+if(p.length>=8) score++; else tips.push("Use 8+ characters");
+if(/[A-Z]/.test(p)) score++; else tips.push("Add uppercase letter");
+if(/[a-z]/.test(p)) score++; else tips.push("Add lowercase letter");
+if(/[0-9]/.test(p)) score++; else tips.push("Add number");
+if(/[!@#$%^&*(),.?\":{}|<>]/.test(p)) score++; else tips.push("Add special character");
+
+let bar=document.getElementById("bar");
+let result=document.getElementById("result");
+let list=document.getElementById("tips");
+
+list.innerHTML="";
+
+if(score<=2){
+result.innerText="Weak Password";
+result.style.color="red";
+bar.style.width="30%";
+bar.style.background="red";
+}
+else if(score<=4){
+result.innerText="Medium Password";
+result.style.color="orange";
+bar.style.width="60%";
+bar.style.background="orange";
+}
+else{
+result.innerText="Strong Password";
+result.style.color="green";
+bar.style.width="100%";
+bar.style.background="green";
+}
+
+tips.forEach(t=>{
+let li=document.createElement("li");
+li.innerText=t;
+list.appendChild(li);
+});
+
+}
+
+function togglePassword(){
+let p=document.getElementById("checkPass");
+
+if(p.type==="password"){
+p.type="text";
+}else{
+p.type="password";
+}
+}
+
+function generatePassword(){
+
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+let pass="";
+
+for(let i=0;i<12;i++){
+pass += chars[Math.floor(Math.random()*chars.length)];
+}
+
+document.getElementById("genPass").value=pass;
+}
+
+function copyPassword(){
+let p=document.getElementById("genPass");
+p.select();
+document.execCommand("copy");
+alert("Password Copied!");
+}
+
+</script>
+
+</body>
+</html>
